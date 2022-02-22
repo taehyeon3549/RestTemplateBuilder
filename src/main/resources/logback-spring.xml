@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="30 seconds">
+    <!-- 경로, 파일명 변수 설정 -->
+    <springProfile name="dev">
+        <property name="LOG_DIR" value="D://winiProj//202105_2104_RND_NIA//Dev//cs//logs"/>
+    </springProfile>
+    <springProfile name="prod">
+        <property name="LOG_DIR" value="logs"/>
+    </springProfile>
+    <property name="LOG_PATH_NAME" value="${LOG_DIR}/now.log"/>
+    <property name="ERR_LOG_BACKUP_DIR" value="${LOG_DIR}/err_log_backup"/>
+    <property name="ERR_LOG_FILE_NAME" value="err_log"/>
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %msg%n"/>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH_NAME}</file>
+        <!-- 일자별로 로그 파일 생성 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH_NAME}_%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory><!-- 로그 보관기간 -->
+        </rollingPolicy>
+        <!-- 로그 형태 -->
+        <encoder>
+            <!--  <pattern> [%thread]  %d{HH:mm:ss} [%thread] %-5level %logger{35} - %msg%n</pattern>  -->
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <file>${LOG_DIR}/${ERR_LOG_FILE_NAME}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ERR_LOG_BACKUP_DIR}%d{yyyyMM, aux}/error.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <maxHistory>366</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Profile 별 log 설정 -->
+
+    <!-- profile = local -->
+    <springProfile name="local">
+        <root level="INFO">
+            <appender-ref ref="FILE" />
+            <appender-ref ref="STDOUT" />
+        </root>
+    </springProfile>
+
+    <!-- profile = dev -->
+    <springProfile name="dev">
+        <root level="INFO">
+            <appender-ref ref="FILE" />
+            <appender-ref ref="STDOUT" />
+        </root>
+    </springProfile>
+
+    <!-- profile = prod -->
+    <springProfile name="prod">
+        <root level="INFO">
+            <appender-ref ref="FILE" />
+            <appender-ref ref="ERROR" />
+        </root>
+    </springProfile>
+</configuration>

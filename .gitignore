@@ -1,0 +1,7 @@
+.git
+.gradle
+.idea
+build
+out
+log
+LOG_DIR_IS_UNDEFINED
