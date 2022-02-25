@@ -108,6 +108,10 @@ ResponseEntity<Object> result = taehyeonRestTempleBuilder
       *(때문에 알고있던 Upcasting과 DownCasting 다시 공부....)*
     - 새롭게 만들어낸 TaehyeonRestTemplate과 기존의 RestTemplate을 공용으로 사용할 수 있도록 2가지 type의 Bean 생성하는 방향으로 생각중
     - 테스트 코드 추가
+  
+  * 2022-02-25
+    - Default RestTemplate Bean 추가 하여 Client가 선택적으로 사용할 수 있게 수정
+    - TestCode에 기존 방식과 TaehyeonRestTemplate 방식 비교 코드 추가
 
 
 ------
@@ -139,6 +143,28 @@ taehyeonRestTempleBuilder.requestFactory(() -> new BufferingClientHttpRequestFac
 ```
 3. TaehyeonRestTempleBuilder 는 Builder인가 RestTemplate 인가.....?
 
+
+4. RestTemple를 통해 Get 요청시 MessageConverter 오류
+* TaehyeonRestTemplateBuilder은 "additionalMessageConverters(new StringHttpMessageConverter(Charset.forName("UTF-8")));" 만으로
+Response Message Converting이 정상 이루어 졌지만, 기본 RestTemplateBuilder에도 똑같이 하였으나 Converting 오류 발생
+>> Casting 한 Builder를 생성하고 생성한 객체에서 추가적인 작업을 진행
+````java
+// 오류 메세지
+org.springframework.web.client.UnknownContentTypeException: Could not extract response: no suitable HttpMessageConverter found for response type [class java.lang.Object] and content type [application/json;charset=UTF-8]
+
+// 해결 코드
+
+RestTemplate restTemplate1 =restTemplateBuilder
+.additionalMessageConverters(new StringHttpMessageConverter(Charset.forName("UTF-8")))
+.build(); // restemplate 생성
+
+List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));  //converter 설정
+messageConverters.add(converter);  
+
+restTemplate1.setMessageConverters(messageConverters);   // messageConverter 직접 추가
+````
  
 
 

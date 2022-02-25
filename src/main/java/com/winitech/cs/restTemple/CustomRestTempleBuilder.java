@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import java.util.Map;
 
-public interface RestTempleBuilder {
+public interface CustomRestTempleBuilder {
     Object entity();
     TaehyeonRestTempleBuilder contentType(MediaType mediaType);
     TaehyeonRestTempleBuilder body(Map<String,Object> body);

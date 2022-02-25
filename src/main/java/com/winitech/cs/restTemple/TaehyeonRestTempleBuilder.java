@@ -11,21 +11,21 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-public class TaehyeonRestTempleBuilder extends RestTemplateBuilder implements RestTempleBuilder{
+public class TaehyeonRestTempleBuilder extends RestTemplateBuilder implements CustomRestTempleBuilder {
     private boolean containsJsonBody = false;
     private RestTemplate restTemplate;
     private HttpHeaders httpHeaders;
     private Object body;
     private URI requestUri;
 
-    public TaehyeonRestTempleBuilder(){
+    TaehyeonRestTempleBuilder(){
         super();
 
         init();
         this.restTemplate = super.build();
     }
 
-    public TaehyeonRestTempleBuilder(CustomRestTemplateCustomizer customRestTemplateCustomizer){
+    TaehyeonRestTempleBuilder(CustomRestTemplateCustomizer customRestTemplateCustomizer){
         super(customRestTemplateCustomizer);
 
         init();
@@ -121,10 +121,10 @@ class TaehyeonRestTemplateBuilderException extends RuntimeException {
     private static final long serialVersionUID = -7806029002430564887L;
     private String message;
 
-    public TaehyeonRestTemplateBuilderException() {
+    TaehyeonRestTemplateBuilderException() {
     }
 
-    public TaehyeonRestTemplateBuilderException(String message) {
+    TaehyeonRestTemplateBuilderException(String message) {
         this.message = message;
     }
 }

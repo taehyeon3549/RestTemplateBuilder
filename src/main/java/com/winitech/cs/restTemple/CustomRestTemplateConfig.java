@@ -4,15 +4,22 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Configuration
 public class CustomRestTemplateConfig {
@@ -48,7 +55,6 @@ public class CustomRestTemplateConfig {
         };
     }
 
-
     @Bean
     public CustomRestTemplateCustomizer customRestTemplateCustomizer() {
         return new CustomRestTemplateCustomizer();
@@ -56,9 +62,9 @@ public class CustomRestTemplateConfig {
 
     @Bean
     @DependsOn(value = {"customRestTemplateCustomizer"})
-    public TaehyeonRestTempleBuilder restTemplateBuilder(HttpComponentsClientHttpRequestFactory factory) {
+    public TaehyeonRestTempleBuilder taehyeonRestTemplateBuilder(HttpComponentsClientHttpRequestFactory factory, CustomRestTemplateCustomizer customRestTemplateCustomizer) {
         /* 상속받은 Builder를 통한 build를 시키면 return이 super의 RestTemplate 이고, sub의 TaehyeonRestTempleBuilder로 casting이 안됨 */
-        TaehyeonRestTempleBuilder taehyeonRestTempleBuilder = new TaehyeonRestTempleBuilder(customRestTemplateCustomizer());
+        TaehyeonRestTempleBuilder taehyeonRestTempleBuilder = new TaehyeonRestTempleBuilder(customRestTemplateCustomizer);
 
         taehyeonRestTempleBuilder.requestFactory(() -> new BufferingClientHttpRequestFactory(factory))
                 .additionalMessageConverters(new StringHttpMessageConverter(Charset.forName("UTF-8")));
@@ -67,8 +73,25 @@ public class CustomRestTemplateConfig {
     }
 
     @Bean
-    @DependsOn(value = {"restTemplateBuilder"})
-    public RestTemplate restTemplate(TaehyeonRestTempleBuilder builder) {
-        return builder.build();
+    @DependsOn(value = {"taehyeonRestTemplateBuilder"})
+    public RestTemplate taehyeonRestTemplate(TaehyeonRestTempleBuilder builder) {
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
+        messageConverters.add(converter);
+
+        RestTemplate restTemplate = builder.build();
+        restTemplate.setMessageConverters(messageConverters);
+
+        return restTemplate;
     }
+
+    @Bean
+    public RestTemplateBuilder restTemplateBuilder(){
+        return new RestTemplateBuilder();
+    }
+
+    @Bean
+    @DependsOn(value = {"restTemplateBuilder"})
+    public RestTemplate restTemplate(@Qualifier("restTemplateBuilder") RestTemplateBuilder builder){return builder.build();}
 }

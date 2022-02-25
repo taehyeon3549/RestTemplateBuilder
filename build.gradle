@@ -33,10 +33,6 @@ dependencies {
     /** Lombok **/
     implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.16'
     annotationProcessor('org.projectlombok:lombok:1.18.16')
-
-    // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
-    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
-
 }
 
 test {
