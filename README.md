@@ -147,10 +147,10 @@ taehyeonRestTempleBuilder.requestFactory(() -> new BufferingClientHttpRequestFac
 3. TaehyeonRestTempleBuilder 는 Builder인가 RestTemplate 인가.....?
 
 
-4. RestTemple를 통해 Get 요청시 MessageConverter 오류
+4. RestTemple를 통해 Get 요청시 MessageConverter 오류**[해결]** <br>
 * TaehyeonRestTemplateBuilder은 "additionalMessageConverters(new StringHttpMessageConverter(Charset.forName("UTF-8")));" 만으로
 Response Message Converting이 정상 이루어 졌지만, 기본 RestTemplateBuilder에도 똑같이 하였으나 Converting 오류 발생
->> Casting 한 Builder를 생성하고 생성한 객체에서 추가적인 작업을 진행
+>> 혹시 몰라 TaehyeonRestTemplate 에도 MessageCoverter 설정 추가
 ````java
 // 오류 메세지
 org.springframework.web.client.UnknownContentTypeException: Could not extract response: no suitable HttpMessageConverter found for response type [class java.lang.Object] and content type [application/json;charset=UTF-8]
