@@ -14,8 +14,11 @@ TaehyeonRestTemple = RestTemplateBuilder + Taehyeon's Function    // Builder-pat
                               |- HttpComponentsClientHttpRequestFactory
                               |     ㄴ Time Out
                               ㄴ CustomRestTemplateCustomizer
-                                    ㄴ Logging
+                                    ㄴ Logging                                    
 ```
+[클래스 구조]
+![TaehyeonRestTemplateBuilder 구조](https://user-images.githubusercontent.com/39556223/155644415-44575e5b-da3a-4fea-8993-f9bceee8c278.png)
+
 
 ## Example
 ```java
