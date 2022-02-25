@@ -112,7 +112,7 @@ ResponseEntity<Object> result = taehyeonRestTempleBuilder
     - 새롭게 만들어낸 TaehyeonRestTemplate과 기존의 RestTemplate을 공용으로 사용할 수 있도록 2가지 type의 Bean 생성하는 방향으로 생각중
     - 테스트 코드 추가
   
-  * 2022-02-25
+* 2022-02-25
     - Default RestTemplate Bean 추가 하여 Client가 선택적으로 사용할 수 있게 수정
     - TestCode에 기존 방식과 TaehyeonRestTemplate 방식 비교 코드 추가
 
