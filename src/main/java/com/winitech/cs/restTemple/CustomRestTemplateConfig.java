@@ -20,7 +20,28 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+/**
+ *
+ * CustomRestTemplateConfig.
+ *
+ * <p>
+ *     커스텀 RestTemplate 설정 및 Default RestTemplate 설정
+ * </p>
+ *
+ * @author CS 김태현
+ * @version 1.0.0
+ * @since 2022-03-07
+ * @modify
+ * <p>
+ * 수정일      수정자      수정내용<br>
+ * ----------  --------   ---------------------------<br>
+ * 2022-03-07  CS 김태현   최초작성 <br>
+ * </p>
+ *
+ * @see CustomRestTemplateCustomizer
+ * @see TaehyeonRestTempleBuilder
+ *
+**/
 @Configuration
 public class CustomRestTemplateConfig {
     @Value("${RestTemplate.HttpClient.MaxConnTotal}") private int MAX_CONN_TOTAL;

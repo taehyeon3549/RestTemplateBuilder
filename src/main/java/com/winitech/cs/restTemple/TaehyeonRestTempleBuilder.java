@@ -2,6 +2,7 @@ package com.winitech.cs.restTemple;
 
 import lombok.Data;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.*;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -11,6 +12,27 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+/**
+ *
+ * TaehyeonRestTempleBuilder.
+ *
+ * <p>
+ *     커스텀 RestTempleBuilder
+ *      기본적인 GET, POST, PATCH에 해당하는 호출에 대한 구현이 완료 되어있음
+ * </p>
+ *
+ * @author CS 김태현
+ * @version 1.0.0
+ * @since 2022-03-07
+ * @modify
+ * <p>
+ *  수정일      수정자      수정내용<br>
+ *  ----------  --------   ---------------------------<br>
+ *  2022-03-07  CS 김태현   최초작성 <br>
+ * </p>
+ *
+ * @see TaehyeonRestTemplateBuilderException
+**/
 public class TaehyeonRestTempleBuilder extends RestTemplateBuilder implements CustomRestTempleBuilder {
     private boolean containsJsonBody = false;
     private RestTemplate restTemplate;
@@ -116,7 +138,7 @@ public class TaehyeonRestTempleBuilder extends RestTemplateBuilder implements Cu
     }
 }
 
-@Data
+
 class TaehyeonRestTemplateBuilderException extends RuntimeException {
     private static final long serialVersionUID = -7806029002430564887L;
     private String message;
